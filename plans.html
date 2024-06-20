@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>FitBuddy - Progress Tracking</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/img/FB_Brand.png">
+    <!-- Font Awesome icons -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <!-- Core theme CSS (includes Bootstrap) -->
+    <link href="css/styles.css" rel="stylesheet">
+    <style>
+        h2 {
+            text-align: center;
+            margin-bottom: 50px;
+            margin-top: 60px;
+        }
+        .step {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .step span {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        iframe {
+            width: 100%;
+            height: 315px;
+            border: none;
+            border-radius: 10px;
+            margin-top: 0px;
+        }
+        .progress-checkbox {
+            margin-top: 10px;
+        }
+        .workout-level, .workout-set {
+            margin-bottom: 20px;
+        }
+        .progress-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/img/FBLogo.png" alt="FitBuddy Logo" style="max-width: 150px; max-height: 50px;">
+            </a>
+            <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.html#about">About</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.html#contact">Contact</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Workout Progress Container -->
+    <div class="container" style="padding-top: 100px;">
+        <h2>Workout Progress</h2>
+        <div class="workout-level">
+            <label for="levelSelect">Select Workout Level:</label>
+            <select id="levelSelect">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+            </select>
+        </div>
+        <div class="workout-set">
+            <label for="setSelect">Select Workout Set:</label>
+            <select id="setSelect">
+                <option value="set1">Set 1</option>
+                <option value="set2">Set 2</option>
+                <option value="set3">Set 3</option>
+                <option value="set4">Set 4</option>
+                <option value="set5">Set 5</option>
+            </select>
+        </div>
+        <div id="workoutSteps"></div>
+        <div class="progress-container">
+            <p id="progressText">Progress: 0%</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Define workout plans for different levels and sets
+            var workoutPlans = {
+                beginner: {
+                    set1: [
+                        { step: 'Beginner Set 1 Step 1', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Beginner Set 1 Step 2', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Beginner Set 1 Step 3', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
+                    ],
+                    set2: [
+                        { step: 'Beginner Set 2 Step 1', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Beginner Set 2 Step 2', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Beginner Set 2 Step 3', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
+                    ],
+                    // Add more sets as needed
+                },
+                intermediate: {
+                    set1: [
+                        { step: 'Intermediate Set 1 Step 1', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Intermediate Set 1 Step 2', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Intermediate Set 1 Step 3', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
+                    ],
+                    set2: [
+                        { step: 'Intermediate Set 2 Step 1', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Intermediate Set 2 Step 2', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Intermediate Set 2 Step 3', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
+                    ],
+                    // Add more sets as needed
+                },
+                advanced: {
+                    set1: [
+                        { step: 'Advanced Set 1 Step 1', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Advanced Set 1 Step 2', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Advanced Set 1 Step 3', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
+                    ],
+                    set2: [
+                        { step: 'Advanced Set 2 Step 1', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Advanced Set 2 Step 2', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                        { step: 'Advanced Set 2 Step 3', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
+                    ],
+                    // Add more sets as needed
+                }
+            };
+
+            var workoutStepsContainer = document.getElementById('workoutSteps');
+            var progressText = document.getElementById('progressText');
+            var levelSelect = document.getElementById('levelSelect');
+            var setSelect = document.getElementById('setSelect');
+
+            function loadWorkoutPlan(level, set) {
+                var workoutPlan = workoutPlans[level][set];
+                workoutStepsContainer.innerHTML = '';
+
+                workoutPlan.forEach(function (step, index) {
+                    var stepElement = document.createElement('div');
+                    stepElement.classList.add('step');
+                    stepElement.innerHTML = `
+                        <span>Step ${index + 1}: ${step.step}</span>
+                        <iframe src="${step.link}" allowfullscreen></iframe>
+                        <div class="progress-checkbox">
+                            <input type="checkbox" id="step${index + 1}" data-index="${index}">
+                            <label for="step${index + 1}">Mark as Completed</label>
+                        </div>
+                        <div class="rating">                    
+                            <label for="rating${index}">Rate This Video:</label>
+                            <select id="rating${index}" name="rating${index}" onchange="updateRating(${index}, this.value)">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>`;
+
+                    workoutStepsContainer.appendChild(stepElement);
+                });
+            }
+
+            // Function to update the rating
+            function updateRating(index, rating) {
+                // Your logic to handle the rating update goes here
+                console.log("Step " + (index + 1) + " rating updated to: " + rating);
+            }
+
+            // Event listener for level and set select elements
+            levelSelect.addEventListener('change', function () {
+                loadWorkoutPlan(this.value, setSelect.value);
+            });
+
+            setSelect.addEventListener('change', function () {
+                loadWorkoutPlan(levelSelect.value, this.value);
+            });
+
+            // Initial loading of workout plan
+            loadWorkoutPlan(levelSelect.value, setSelect.value);
+        });
+    </script>
+</body>
+</html>
+
+
+                            
