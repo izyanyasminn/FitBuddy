@@ -143,5 +143,46 @@
             }
         });
     </script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent form from submitting the default way
+    
+            const fullName = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+    
+            // Create the payload to send to the server
+            const data = {
+                username: fullName,
+                email: email,
+                password: password,
+            };
+    
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+    
+                const result = await response.json();
+    
+                if (response.ok) {
+                    // Registration successful, redirect to login or user profile page
+                    alert('Registration successful!');
+                    window.location.href = 'login.html'; // Redirect to login page after successful signup
+                } else {
+                    // Handle registration error
+                    alert(`Error: ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again later.');
+            }
+        });
+    </script>
+    
 </body>
 </html>

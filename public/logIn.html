@@ -121,6 +121,46 @@
                 window.location.href = "userProfile.html";
             }
         </script>
+        <script>
+            document.querySelector('form').addEventListener('submit', async function (e) {
+                e.preventDefault(); // Prevent form submission
+        
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+        
+                // Payload to send to the server
+                const data = {
+                    email: email,
+                    password: password,
+                };
+        
+                try {
+                    const response = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+        
+                    const result = await response.json();
+        
+                    if (response.ok) {
+                        // Login successful, store the token and redirect
+                        localStorage.setItem('token', result.token); // Store JWT token in localStorage
+                        alert('Login successful!');
+                        window.location.href = 'userProfile.html'; // Redirect to user profile page
+                    } else {
+                        // Handle login error
+                        alert(`Error: ${result.message}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Something went wrong. Please try again later.');
+                }
+            });
+        </script>
+        
 
 </body>
 </html>
